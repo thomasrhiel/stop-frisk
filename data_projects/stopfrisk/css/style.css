@@ -1,0 +1,201 @@
+body {
+	background-color: whitesmoke;
+  font-family: "Helvetica Neue", Helvetica, proxima-nova, arial, sans-serif;
+}
+
+a, a:visited, a:active {
+  color: #3399fb;
+}
+
+#vis {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  clear: both;
+}
+
+#smallScreenMessage {
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  display: none;
+  clear: both;
+font-family: "Helvetica Neue", Helvetica, proxima-nova, arial, sans-serif;
+}
+
+footer {
+  position: fixed;
+  bottom: 4px;
+  width: 100%;
+  text-align: center;
+}
+
+footer p {
+	max-width: 65%;
+	margin: 0 auto;
+	margin-bottom: 0;
+	font-weight: 500;
+	-webkit-font-smoothing: antialiased;
+}
+
+.article_title {
+	font-size: 86px;
+	fill: #3399fb;
+	font-weight: bold;
+	-webkit-font-smoothing: antialiased;
+
+}
+
+.foreignHTMLelement div {
+	background-color: transparent;
+	font-family: "Helvetica Neue", Helvetica, proxima-nova, arial, sans-serif;
+	color: rgb(60,60,60);
+	font-size: 16px;
+	line-height: 1.4em;
+	-webkit-font-smoothing:antialiased;
+	
+	position: relative;
+}
+
+.foreignHTMLelement div span {
+  display: block;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+.foreignHTMLelement div p.byline {
+  font-weight: 800;
+}
+
+
+.relatedVisualizations span div {
+	float: left;
+	width: 30%;
+	margin-right: 4.5%;
+}
+
+.relatedVisualizations span .last {
+	margin-right: 0 !important;
+}
+
+.relatedVisualizations span h2 {
+	width: 100%;
+	font-size: 1.25em;
+	margin: 3em 0 1.5em;
+	color: rgb(60,60,60);
+	float: left;
+	clear: both;
+}
+
+.relatedVisualizations span h2.learnMore {
+	font-size: 1.125em;
+	font-weight: 500;
+}
+
+.relatedVisualizations span div h3 {
+	line-height: 1.2em;
+	margin-bottom: 1em;
+}
+
+.relatedVisualizations span div p {
+	font-size: 1.125em;
+	line-height: 1.3em;
+}
+
+.foreignHTMLelement a, .foreignHTMLelement a:hover {
+	text-decoration: none !important;
+	color: #3399fb;
+}
+
+.foreignHTMLelement a:hover {
+	opacity: 0.75 !important;
+}
+
+
+
+
+
+
+/* make keyframes that tell the start state and the end state of our object */
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+ 
+.foreignHTMLelement div, .fadeInElement {
+    opacity:0;  /* make things invisible upon start */
+    -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+    -moz-animation:fadeIn ease-in 1;
+    animation:fadeIn ease-in 1;
+ 
+    -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+    -moz-animation-fill-mode:forwards;
+    animation-fill-mode:forwards;
+ 
+    -webkit-animation-duration:400ms;
+    -moz-animation-duration:400ms;
+    animation-duration:400ms;
+    
+    -webkit-animation-delay: 0.5s;
+	-moz-animation-delay: 0.5s;
+	animation-delay: 0.5s;
+}
+
+.filter_label {
+	font-size: 18px;
+	fill: #3399fb;
+	font-weight: bold;
+	-webkit-font-smoothing: antialiased;
+}
+
+.reason_for_stop, .reason_for_frisk {
+	font-size: 14px;
+}
+
+@media screen and (max-width: 1024px){
+  .article_title {
+  	font-size: 72px;
+    }
+}
+
+
+@media screen and (max-width: 800px){
+	.reason_for_stop, .reason_for_frisk {
+	font-size: 12px;
+	}
+}
+
+@media screen and (max-width: 767px){
+	
+	.cbp-hsmenu-wrapper .cbp-hsmenu {
+		padding: 0;
+	}
+	
+	#vis {
+		display: none;
+	}
+	
+	#smallScreenMessage {
+		display: block;
+		font-size: 16px;
+		padding: 1em;		 
+	}
+	
+	#smallScreenMessage h2 {
+		font-size: 2.5em;
+		line-height: 1.2em;
+		margin: 0.5em 0 1em;
+		color: #3399fb;
+	}
+	
+	#smallScreenMessage p {
+		font-size: 1em;
+		line-height: 1.4em;
+	}
+	
+	footer {
+		display: none;
+	}
+}
+
+

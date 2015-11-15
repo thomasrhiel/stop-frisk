@@ -1,0 +1,144 @@
+
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Stop and Frisk breakdowns (draft)</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+  <!-- CSS concatenated and minified via ant build script-->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- end CSS-->
+  
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<script src="js/modernizr.custom.js"></script>
+
+
+  <script src="js/libs/modernizr-2.0.6.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+    </header>
+    <div id="main" role="main">
+    <nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul id="view_selection" class="cbp-hsmenu">
+							<li class="BKLYNRlogo"><a class="top_level_menu_link logo" href="/">BKLYNR</a></li>
+							<li><a class="top_level_menu_link" id="all" href="#">Introduction</a></li>
+							<li>
+								<a href="#">The suspected</a>
+								<ul class="cbp-hssubmenu">
+									<li><a id="borough" href="#"><span>Where did the stop occur?</span></a></li>
+									<li><a id="race" href="#"><span>What was the suspect’s race?</span></a></li>
+									<li><a id="age" href="#"><span>What was the suspect’s age?</span></a></li>									
+									<li><a id="sex" href="#"><span>What was the suspect’s gender?</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">The stops</a>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<li><a id="reason_for_stop" href="#"><span>What was the reason for the stop?</span></a></li>
+									<li><a id="frisked" href="#"><span>Was the suspect frisked?</span></a></li>
+									<li><a id="reason_for_frisk" href="#"><span>Why was the suspect frisked?</span></a></li>
+									<li><a id="physical_force_used" href="#"><span>Did the officer use physical force?</span></a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">The outcome</a>
+								<ul class="cbp-hssubmenu">
+									<li><a id="contraband_found" href="#"><span>Was contraband found?</span></a></li>
+									<li><a id="weapon_found" href="#"><span>Was a weapon found?</span></a></li>
+									<li><a id="gun_found" href="#"><span>Was a gun found?</span></a></li>
+									<li><a id="summons_issued" href="#"><span>Was a summons issed?</span></a></li>
+									<li><a id="arrest_made" href="#"><span>Was an arrest made?</span></a></li>
+								</ul>
+							</li>
+							<li><a class="top_level_menu_link logo" id="related" href="/">Related</a></li>
+						</ul>
+					</div>
+				</nav>
+	    <div id="smallScreenMessage">
+		    <h2>Visualizing stop-and-frisk</h2>
+		    <p>These days, ”stop, question, and frisk” appears to be up against the wall. (So too were 1,819 of those stopped last year, but we’ll get to the numbers in a minute.) The NYPD policing tactic, which encourages officers to stop and search people who appear suspicious, and which is used in Brooklyn more than any other borough, has in the last month been ruled unconstitutional, curbed by a pair of City Council bills, and inveighed against by the Democratic field of would-be mayors.</p>
+		    <p>But with only long-shot candidate John Liu calling for a complete end to stop-and-frisk, some form of the tactic is likely to endure. This visualization, produced with data originally made available by the NYPD and recently compiled by the NYCLU, reveals who was stopped, why they were stopped, and what, if anything, was found by the police as a result. The data reflects stops — more than 530,000 of them — that occurred in 2012.<p>
+		    <p>While BKLYNR is committed to making as many of our articles as possible	 available on any device, this visualization just doesn’t really work on a small screen. Rather than provide a watered-down version, we encourage you to check it out on a larger screen.<p>
+		    <p>Want to take a look later? <a href="mailto:?subject=Visualizing%20stop-and-frisk%20—%20BKLYNR&body=Check%20out%20this%20interactive%20visualization%20that%20breaks%20down%20the%20more%20than%20500,000%20stop-and-frisk%20searches%20from%202012:%20http://bklynr.com/stop-and-frisk" target="_top">Send yourself an email reminder</a>.</p>
+		    </p>
+	    </div>
+	    <div id="vis"></div>
+    </div>
+    <footer>
+	    <p class="fadeInElement">Each dot represents 1,000 stops. Data reflects stops that occurred in 2012.</p>
+    </footer>
+
+
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> -->
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')</script>
+
+  <script defer src="js/plugins.js"></script>
+  <script defer src="js/script.js"></script>
+  
+  <script>
+	  if(window.screen.width > 767){
+		  document.write('<script src="js/libs/coffee-script.js"><\/script>');
+	  }
+  </script>
+
+  
+<!--   <script src="js/libs/coffee-script.js"></script> -->
+  <script src="js/libs/d3.min.js"></script>
+  <script src="js/libs/d3.csv.min.js"></script>
+  <script src="js/libs/d3.layout.min.js"></script>
+  <script src="js/libs/d3.geom.min.js"></script>
+  <script type="text/coffeescript" src="coffee/vis.coffee"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $(document).ready(function() {
+          $('#view_selection .cbp-hssubmenu a, #view_selection a.top_level_menu_link').click(function() {
+            var view_type = $(this).attr('id');
+            if(view_type == "reason_for_stop"){
+	            $("footer p").html("Each dot represents 1,000 stops. The reasons are pulled directly from the NYPD’s own form, which officers complete after a stop. Officers can select multiple reasons per stop.");
+            }
+            else if(view_type == "reason_for_frisk"){
+	            $("footer p").html("Each dot represents 1,000 stops. The reasons are pulled directly from the NYPD’s own form, which officers complete after a stop. Officers can select multiple reasons per stop involving a frisk.");
+            }
+            else if(view_type == "related"){
+	            $("footer p").html("");
+            }            
+            else {
+	            $("footer p").html("Each dot represents 1,000 stops.");
+            }            
+            $('#view_selection .cbp-hssubmenu a').removeClass('active');
+            $(this).toggleClass('active');
+            toggle_view(view_type);
+            return false;
+          });
+        });
+    });
+    
+  </script>
+
+
+  <!--[if lt IE 7 ]>
+    <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+    <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+  <![endif]-->
+  <script src="js/cbpHorizontalSlideOutMenu.min.js"></script>
+	<script>
+		var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+	</script>
+
+</body>
+</html>

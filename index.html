@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>All the Stops</title>
+	<meta name="description" content="In-depth stories about Brooklyn — all of Brooklyn." />
+	<meta name="author" content="Thomas Rhiel">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+	<!-- CSS concatenated and minified via ant build script-->
+	<link rel="stylesheet" href="data_projects/stopfrisk/css/reset.css">
+	<link rel="stylesheet" href="data_projects/stopfrisk/css/bootstrap.min.css">
+	<link rel="stylesheet" href="data_projects/stopfrisk/css/style.css">
+	<link rel="stylesheet" href="data_projects/stopfrisk/css/navigation.css">
+	<!-- end CSS-->
+	
+	<script src="data_projects/stopfrisk/js/modernizr.custom.js"></script>
+	<script src="data_projects/stopfrisk/js/libs/modernizr-2.0.6.min.js"></script>
+	<script src="data_projects/stopfrisk/js/libs/jquery-1.6.2.min.js"></script>
+</head>
+
+<body>
+	<div id="main">
+		<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+			<div class="cbp-hsinner">
+				<ul id="view_selection" class="cbp-hsmenu">
+					<li class="BKLYNRlogo"><a class="top_level_menu_link logo" href="/">BKLYNR</a></li>
+					<li><a class="top_level_menu_link" id="all" href="#">Introduction</a></li>
+					<li>
+						<a href="#">The suspected</a>
+						<ul class="cbp-hssubmenu">
+							<li><a id="borough" href="#"><span>Where did the stop occur?</span></a></li>
+							<li><a id="race" href="#"><span>What was the suspect’s race?</span></a></li>
+							<li><a id="age" href="#"><span>What was the suspect’s age?</span></a></li>
+							<li><a id="sex" href="#"><span>What was the suspect’s sex?</span></a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">The stops</a>
+						<ul class="cbp-hssubmenu cbp-hssub-rows">
+							<li><a id="reason_for_stop" href="#"><span>What was the reason for the stop?</span></a></li>
+							<li><a id="frisked" href="#"><span>Was the suspect frisked?</span></a></li>
+							<li><a id="reason_for_frisk" href="#"><span>Why was the suspect frisked?</span></a></li>
+							<li><a id="physical_force_used" href="#"><span>Did the officer use physical force?</span></a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">The outcome</a>
+						<ul class="cbp-hssubmenu">
+							<li><a id="contraband_found" href="#"><span>Was contraband found?</span></a></li>
+							<li><a id="weapon_found" href="#"><span>Was a weapon found?</span></a></li>
+							<li><a id="gun_found" href="#"><span>Was a gun found?</span></a></li>
+							<li><a id="summons_issued" href="#"><span>Was a summons issued?</span></a></li>
+							<li><a id="arrest_made" href="#"><span>Was an arrest made?</span></a></li>
+						</ul>
+					</li>
+					<li><a class="top_level_menu_link logo" id="related" href="/">More</a></li>
+					<li class="socialMedia"><a href="https://twitter.com/share?text=All%20the%20Stops%20—%20Visualizing%20a%20year%20of%20stop-and-frisk%20searches" target="_blank">&#62217;</a></li>
+					<li class="socialMedia"><a href="#" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog','width=626,height=436');return false;">&#62222;</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div id="smallScreenMessage">
+			<h2>All the stops</h2>
+			<p>These days, the NYPD’s “stop, question, and frisk” tactic is under fire. The policing measure, which encourages officers to stop and search people who appear suspicious, and which is used in Brooklyn more than any other borough, has in the last month been ruled unconstitutional, curbed by a pair of City Council bills, and inveighed against by the Democratic field of would-be mayors.</p>
+			<p>But with only long-shot candidate John Liu calling for a complete end to stop-and-frisk, some form of the tactic is likely to endure. This visualization, which reflects the more than 530,000 stops that occurred in 2012, reveals who is being stopped, why they’re being stopped, and what, if anything, is being found by the police as a result. The data, originally made available by the NYPD, was <a href="http://www.nyclu.org/content/stop-and-frisk-data" target="_blank">recently compiled</a> by the&nbsp;NYCLU.<p>
+			<p>While BKLYNR is committed to making as many of our articles as possible available on any device, this visualization just doesn’t really work on a small screen. Rather than provide a watered-down version, we encourage you to check it out on a larger screen.<p>
+			<p>Want to take a look later? <a href="mailto:?subject=All%20the%20stops%20—%20BKLYNR&body=Check%20out%20this%20interactive%20visualization%20that%20breaks%20down%20the%20more%20than%20530,000%20stop-and-frisk%20searches%20from%202012:%20http://bklynr.com/all-the-stops" target="_top">Send yourself an email reminder</a>.</p>
+			</p>
+		</div>
+		<div id="vis"></div>
+	</div>
+	<footer>
+		<p class="fadeInElement">Each dot represents 1,000 stops.</p>
+	</footer>
+
+	<script type="text/javascript" src="data_projects/stopfrisk/js/libs/d3.min.js"></script>
+	<script type="text/javascript" src="data_projects/stopfrisk/js/libs/d3.csv.min.js"></script>
+	<script type="text/javascript" src="data_projects/stopfrisk/js/libs/d3.layout.min.js"></script>
+	<script type="text/javascript" src="data_projects/stopfrisk/js/libs/d3.geom.min.js"></script>
+
+	<script type="text/javascript" src="viz.js"></script>
+	<script type="text/javascript" src="viz-controller.js"></script>
+	<script type="text/javascript" src="menu.js"></script>
+</body>
+</html>
