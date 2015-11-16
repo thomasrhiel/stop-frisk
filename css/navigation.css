@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'bpmenu';
-	src:url('../fonts/bpmenu/bpmenu.eot');
-	src:url('../fonts/bpmenu/bpmenu.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/bpmenu/bpmenu.woff') format('woff'),
-		url('../fonts/bpmenu/bpmenu.ttf') format('truetype'),
-		url('../fonts/bpmenu/bpmenu.svg#bpmenu') format('svg');
+	src:url('/fonts/bpmenu/bpmenu.eot');
+	src:url('/fonts/bpmenu/bpmenu.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/bpmenu/bpmenu.woff') format('woff'),
+		url('/fonts/bpmenu/bpmenu.ttf') format('truetype'),
+		url('/fonts/bpmenu/bpmenu.svg#bpmenu') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

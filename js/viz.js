@@ -1,57 +1,23 @@
-var StopAndFriskInteractive, root,
-	bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var StopAndFriskInteractive, root;
 
 StopAndFriskInteractive = (function() {
-	var iPadPortrait, win_height, win_width;
-
-	win_width = $(window).width();
-	win_height = $(window).height() - 46;
-
-	if (window.screen.width <= 1024) {
-		win_height = $(window).height() - 37;
-	}
-
-	iPadPortrait = false;
-
-	if ((window.screen.width === 768) && (window.screen.height === 1024) && (window.innerWidth === 768)) {
-		iPadPortrait = true;
-	}
-
 	function StopAndFriskInteractive(data) {
-		this.move_towards = bind(this.move_towards, this);
-		this.display_by = bind(this.display_by, this);
-		this.move_towards_center = bind(this.move_towards_center, this);
-		this.display_group_all = bind(this.display_group_all, this);
-		this.start = bind(this.start, this);
-		this.create_vis = bind(this.create_vis, this);
-		this.create_nodes = bind(this.create_nodes, this);
-		var iPad;
 		this.data = data;
-		this.width = win_width;
-		this.height = win_height;
-		iPad = navigator.userAgent.match(/iPad/i) !== null;
-		iPadPortrait = false;
-		if (window.screen.width === 768 && window.screen.height === 1024 && (Math.abs(window.orientation) !== 90)) {
-			iPadPortrait = true;
-		}
-		this.center = {
+		this.width = $(window).width();
+		this.height = window.screen.width <= 1024 ? $(window).height() - 37 : $(window).height() - 46;
+		this.iPadPortrait = (window.screen.width === 768 && window.screen.height === 1024 && (Math.abs(window.orientation) !== 90)) ? true : false;
+		this.center = this.iPadPortrait ? {
+			x: this.width / 2,
+			y: this.height / 4
+		} : {
 			x: this.width / 3,
 			y: this.height / 1.875
 		};
-		if (iPadPortrait === true) {
-			this.center = {
-				x: this.width / 2,
-				y: this.height / 4
-			};
-		}
 		this.extras_center = {
 			x: this.width / 2,
 			y: 1.9 * this.height
 		};
-		this.radius_size = 6;
-		if (this.width <= 1024) {
-			this.radius_size = 5;
-		}
+		this.radius_size = this.width <= 1024 ? 5 : 6;
 		this.mappings = {
 			reason_for_frisk: {
 				centers: {
@@ -592,13 +558,11 @@ StopAndFriskInteractive = (function() {
 	};
 
 	StopAndFriskInteractive.prototype.create_vis = function() {
-		var that;
 		this.vis_height = d3.select("#vis").style("height", this.height);
 		this.vis = d3.select("#vis").append("svg").attr("width", this.width).attr("height", this.height).attr("id", "svg_vis");
 		this.circles = this.vis.selectAll("circle").data(this.nodes, function(d) {
 			return d.id;
 		});
-		that = this;
 		this.circles.enter().append("circle").attr("r", 0).attr("fill", function(d) {
 			return d.color;
 		}).attr("id", function(d) {
@@ -619,49 +583,49 @@ StopAndFriskInteractive = (function() {
 
 	StopAndFriskInteractive.prototype.display_group_all = function() {
 		var text, title, title_data, title_x, title_y;
-		this.force.gravity(this.layout_gravity).charge(this.charge).friction(0.9).on("tick", (function(_this) {
+		this.force.gravity(this.layout_gravity).charge(this.charge).friction(0.9).on('tick', (function(_this) {
 			return function(e) {
 				return _this.circles.each(_this.move_towards_center(e.alpha)).attr("cx", function(d) {
 					return d.x;
-				}).attr("cy", function(d) {
+				}).attr('cy', function(d) {
 					return d.y;
 				});
 			};
 		})(this));
 		this.force.start();
-		if (iPadPortrait === true) {
+		if (this.iPadPortrait) {
 			title_x = {
-				"All the Stops": this.width / 2
+				'All the Stops': this.width / 2
 			};
 			title_data = d3.keys(title_x);
 			title_y = {
-				"All the Stops": this.height / 4 + 20
+				'All the Stops': this.height / 4 + 20
 			};
 			title_data = d3.keys(title_y);
 		} else {
 			title_x = {
-				"All the Stops": this.width / 3
+				'All the Stops': this.width / 3
 			};
 			title_data = d3.keys(title_x);
 			title_y = {
-				"All the Stops": this.height / 2 + 20
+				'All the Stops': this.height / 2 + 20
 			};
 			title_data = d3.keys(title_y);
 		}
 		this.hide_all_titles();
-		title = this.vis.selectAll(".title").data(title_data);
-		title.enter().append("text").attr("opacity", 0).attr("class", "article_title").attr("x", (function(_this) {
+		title = this.vis.selectAll('.title').data(title_data);
+		title.enter().append('text').attr('opacity', 0).attr('class', 'article_title').attr('x', (function(_this) {
 			return function(d) {
 				return title_x[d];
 			};
-		})(this)).attr("y", (function(_this) {
+		})(this)).attr('y', (function(_this) {
 			return function(d) {
 				return title_y[d];
 			};
-		})(this)).attr("text-anchor", "middle").text(function(d) {
+		})(this)).attr('text-anchor', 'middle').text(function(d) {
 			return d;
-		}).transition().duration(400).attr("opacity", 1);
-		if (iPadPortrait === true) {
+		}).transition().duration(400).attr('opacity', 1);
+		if (this.iPadPortrait) {
 			return text = this.vis.append('foreignObject').attr('x', this.width / 4).attr('y', this.height / 2 - 20).attr('width', this.width / 2).attr('height', this.height).classed('foreignHTMLelement', true).append("xhtml:div").html('<span><p><strong>Introduction</strong></p><p>These days, the NYPD’s “stop, question, and frisk” tactic is under fire. The policing measure, which encourages officers to stop and search people who appear suspicious, and which is used in Brooklyn more than any other borough, has in the last month been ruled unconstitutional, curbed by a pair of City Council bills, and inveighed against by the Democratic field of would-be mayors.</p><p>But with only long-shot candidate John Liu calling for a complete end to stop-and-frisk, some form of the tactic is likely to endure. This visualization, which reflects the more than 530,000 stops that occurred in 2012, reveals who is being stopped, why they’re being stopped, and what, if anything, is being found by the police as a result. The data, originally made available by the NYPD, was <a href="http://www.nyclu.org/content/stop-and-frisk-data" target="_blank">recently compiled</a> by the&nbsp;NYCLU.<p><p class="byline">Visualization by Thomas Rhiel</p></span>');
 		} else {
 			return text = this.vis.append('foreignObject').attr('x', 1.9 * this.width / 3).attr('y', (this.height - 350) / 2).attr('width', this.width / 4).attr('height', this.height).classed('foreignHTMLelement', true).append("xhtml:div").html('<span><p><strong>Introduction</strong></p><p>These days, the NYPD’s “stop, question, and frisk” tactic is under fire. The policing measure, which encourages officers to stop and search people who appear suspicious, and which is used in Brooklyn more than any other borough, has in the last month been ruled unconstitutional, curbed by a pair of City Council bills, and inveighed against by the Democratic field of would-be mayors.</p><p>But with only long-shot candidate John Liu calling for a complete end to stop-and-frisk, some form of the tactic is likely to endure. This visualization, which reflects the more than 530,000 stops that occurred in 2012, reveals who is being stopped, why they’re being stopped, and what, if anything, is being found by the police as a result. The data, originally made available by the NYPD, was <a href="http://www.nyclu.org/content/stop-and-frisk-data" target="_blank">recently compiled</a> by the&nbsp;NYCLU.<p><p class="byline">Visualization by Thomas Rhiel</p></span>');
@@ -684,12 +648,12 @@ StopAndFriskInteractive = (function() {
 
 	StopAndFriskInteractive.prototype.hide_all_titles = function() {
 		var hide_titles;
-		return hide_titles = this.vis.selectAll(".article_title, .foreignHTMLelement, .filter_label").transition().duration(200).attr("opacity", 0).remove();
+		return hide_titles = this.vis.selectAll('.article_title, .foreignHTMLelement, .filter_label').transition().duration(200).attr("opacity", 0).remove();
 	};
 
 	StopAndFriskInteractive.prototype.display_labels = function(name_of_filter) {
 		var label_data, labels, text, title_x_coordinates, title_y_coordinates;
-		if (name_of_filter === "related") {
+		if (name_of_filter === 'related') {
 			this.hide_all_titles();
 			return text = this.vis.append('foreignObject').attr('x', 0.1 * this.width).attr('y', this.height / 4).attr('width', 0.8 * this.width).attr('height', this.height).classed('foreignHTMLelement', true).classed('relatedVisualizations', true).append("xhtml:div").html('<span><h2>More visualizations</h2><div><h3><a href="http://bklynr.com/block-by-block-brooklyns-past-and-present/">Block by Block, Brooklyn’s Past and&nbsp;Present</a></h3><p>Exploring the history of the borough through the ages of its more than 320,000 buildings. A map by Thomas&nbsp;Rhiel</p></div><div><h3><a href="http://bklynr.com/mean-streets/">Mean Streets</a></h3><p>A data-driven look at Brooklyn’s most dangerous roads for cyclists. An interactive map by Nilkanth&nbsp;Patel</p></div><div class="last"><h3><a href="http://bklynr.com/brooklyn-beat/">Brooklyn Beat</a></h3><p>How coverage of Brooklyn has changed. An interactive map by Nilkanth&nbsp;Patel</p></div></span>');
 		} else {
@@ -749,7 +713,7 @@ root = typeof exports !== "undefined" && exports !== null ? exports : this;
 $(function() {
 	var chart, render_vis;
 	chart = null;
-	render_vis = function(csv) {
+	root.render_vis = function(csv) {
 		chart = new StopAndFriskInteractive(csv);
 		chart.start();
 		return root.display_all();
@@ -775,5 +739,5 @@ $(function() {
 			}
 		};
 	})(this);
-	return d3.csv("data_projects/stopfrisk/data/sampled_stop_and_frisk_533_with_extras_pared2.csv", render_vis);
+	return d3.csv("data/stop_and_frisk.csv", root.render_vis);
 });
