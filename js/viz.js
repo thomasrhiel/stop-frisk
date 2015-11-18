@@ -1,11 +1,12 @@
 var StopAndFriskInteractive, root;
 
 StopAndFriskInteractive = (function() {
+
 	function StopAndFriskInteractive(data) {
 		this.data = data;
-		this.width = $(window).width();
-		this.height = window.screen.width <= 1024 ? $(window).height() - 37 : $(window).height() - 46;
-		this.iPadPortrait = (window.screen.width === 768 && window.screen.height === 1024 && (Math.abs(window.orientation) !== 90)) ? true : false;
+		this.width = window.innerWidth;
+		this.height = window.innerWidth <= 1024 ? window.innerHeight - 37 : window.innerHeight - 46;
+		this.iPadPortrait = (this.width === 768 && window.screen.height === 1024 && (Math.abs(window.orientation) !== 90)) ? true : false;
 		this.center = this.iPadPortrait ? {
 			x: this.width / 2,
 			y: this.height / 4
@@ -59,41 +60,71 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"Furtive movements": this.width / 6.8,
-					"Violent crime": this.width / 3,
-					"suspected": this.width / 3,
-					"Inappropriate attire": this.width / 2,
-					"for season": this.width / 2,
-					"Actions of engaging": 2 * this.width / 3,
-					"in a violent crime": 2 * this.width / 3,
-					"Refusal to comply": 6 * this.width / 7,
-					"with officer directions": 6 * this.width / 7,
-					"Verbal threats": this.width / 6.8,
-					"by suspect": this.width / 6.8,
-					"Knowledge of prior": this.width / 3,
-					"criminal behavior": this.width / 3,
-					"Suspicious bulge": this.width / 2,
-					"Other suspicion": 2.05 * this.width / 3,
-					"of weapons": 2.05 * this.width / 3
-				},
-				titles_y: {
-					"Furtive movements": this.height / 7,
-					"Violent crime": this.height / 7,
-					"suspected": this.height / 7 + 17,
-					"Inappropriate attire": this.height / 7,
-					"for season": this.height / 7 + 17,
-					"Actions of engaging": this.height / 7,
-					"in a violent crime": (this.height / 7) + 17,
-					"Refusal to comply": this.height / 7,
-					"with officer directions": this.height / 7 + 17,
-					"Verbal threats": 2 * this.height / 3,
-					"by suspect": 2 * this.height / 3 + 17,
-					"Knowledge of prior": 2 * this.height / 3,
-					"criminal behavior": 2 * this.height / 3 + 17,
-					"Suspicious bulge": 2 * this.height / 3,
-					"Other suspicion": 2 * this.height / 3,
-					"of weapons": 2 * this.height / 3 + 17
+				titles: {
+					"Furtive movements": {
+						x: this.width / 6.8,
+						y: this.height / 7
+					},
+					"Violent crime": {
+						x: this.width / 3,
+						y: this.height / 7
+					},
+					"suspected": {
+						x: this.width / 3,
+						y: this.height / 7 + 17
+					},
+					"Inappropriate attire": {
+						x: this.width / 2,
+						y: this.height / 7
+					},
+					"for season": {
+						x: this.width / 2,
+						y: this.height / 7 + 17
+					},
+					"Actions of engaging": {
+						x: 2 * this.width / 3,
+						y: this.height / 7
+					},
+					"in a violent crime": {
+						x:  2 * this.width / 3,
+						y: (this.height / 7) + 17
+					},
+					"Refusal to comply": {
+						x: 6 * this.width / 7,
+						y: this.height / 7
+					},
+					"with officer directions": {
+						x: 6 * this.width / 7,
+						y: this.height / 7 + 17
+					},
+					"Verbal threats": {
+						x: this.width / 6.8,
+						y: 2 * this.height / 3
+					},
+					"by suspect": {
+						x: this.width / 6.8,
+						y: 2 * this.height / 3 + 17
+					},
+					"Knowledge of prior": {
+						x: this.width / 3,
+						y: 2 * this.height / 3
+					},
+					"criminal behavior": {
+						x:  this.width / 3,
+						y: 2 * this.height / 3 + 17
+					},
+					"Suspicious bulge": {
+						x: this.width / 2,
+						y: 2 * this.height / 3
+					},
+					"Other suspicion": {
+						x:  2.05 * this.width / 3,
+						y:  2 * this.height / 3
+					},
+					"of weapons": {
+						x: 2.05 * this.width / 3,
+						y: 2 * this.height / 3 + 17
+					}
 				}
 			},
 			reason_for_stop: {
@@ -140,43 +171,75 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"Actions indicative": this.width / 6.8,
-					"of a drug transaction": this.width / 6.8,
-					"Actions of engaging": this.width / 3,
-					"in a violent crime": this.width / 3,
-					"Carrying": this.width / 2,
-					"suspicious object": this.width / 2,
-					"Casing a victim": 2 * this.width / 3,
-					"or location": 2 * this.width / 3,
-					"Fits a relevant": 6 * this.width / 7,
-					"description": 6 * this.width / 7,
-					"Furtive movements": this.width / 6.8,
-					"Suspect acting": this.width / 3,
-					"as a lookout": this.width / 3,
-					"Suspicious bulge": this.width / 2,
-					"Clothes commonly": 2.05 * this.width / 3,
-					"used in a crime": 2.05 * this.width / 3,
-					"Other": 6 * this.width / 7
-				},
-				titles_y: {
-					"Furtive movements": this.height / 7,
-					"Actions of engaging": this.height / 7,
-					"in a violent crime": this.height / 7 + 17,
-					"Carrying": this.height / 7,
-					"suspicious object": this.height / 7 + 17,
-					"Casing a victim": this.height / 7,
-					"or location": this.height / 7 + 17,
-					"Fits a relevant": this.height / 7,
-					"description": this.height / 7 + 17,
-					"Actions indicative": 2 * this.height / 3,
-					"of a drug transaction": 2 * this.height / 3 + 17,
-					"Suspect acting": 2 * this.height / 3,
-					"as a lookout": 2 * this.height / 3 + 17,
-					"Suspicious bulge": 2 * this.height / 3,
-					"Clothes commonly": 2 * this.height / 3,
-					"used in a crime": 2 * this.height / 3 + 17,
-					"Other": 2 * this.height / 3
+				titles: {
+					"Actions indicative": {
+						x: this.width / 6.8,
+						y: 2 * this.height / 3
+					},
+					"of a drug transaction": {
+						x: this.width / 6.8,
+						y: 2 * this.height / 3 + 17
+					},
+					"Actions of engaging": {
+						x:  this.width / 3,
+						y: this.height / 7
+					},
+					"in a violent crime": {
+						x: this.width / 3,
+						y: this.height / 7 + 17
+					},
+					"Carrying": {
+						x: this.width / 2,
+						y: this.height / 7
+					},
+					"suspicious object": {
+						x: this.width / 2,
+						y: this.height / 7 + 17
+					},
+					"Casing a victim": {
+						x: 2 * this.width / 3,
+						y: this.height / 7
+					},
+					"or location": {
+						x: 2 * this.width / 3,
+						y: this.height / 7 + 17
+					},
+					"Fits a relevant": {
+						x: 6 * this.width / 7,
+						y: this.height / 7
+					},
+					"description": {
+						x: 6 * this.width / 7,
+						y: this.height / 7 + 17
+					},
+					"Furtive movements": {
+						x: this.width / 6.8,
+						y: this.height / 7
+					},
+					"Suspect acting": {
+						x: this.width / 3,
+						y: 2 * this.height / 3
+					},
+					"as a lookout": {
+						x: this.width / 3,
+						y: 2 * this.height / 3 + 17
+					},
+					"Suspicious bulge": {
+						x: this.width / 2,
+						y: 2 * this.height / 3
+					},
+					"Clothes commonly": {
+						x: 2.05 * this.width / 3,
+						y: 2 * this.height / 3
+					},
+					"used in a crime": {
+						x: 2.05 * this.width / 3,
+						y: 2 * this.height / 3 + 17
+					},
+					"Other": {
+						x: 6 * this.width / 7,
+						y:2 * this.height / 3
+					}
 				}
 			},
 			race: {
@@ -207,21 +270,31 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"Black": this.width / 5,
-					"Black Hispanic": this.width / 2,
-					"White Hispanic": 4 * this.width / 5,
-					"White": this.width / 5,
-					"Asian/Pacific Islander": this.width / 2,
-					"Other/unspecified": 4 * this.width / 5
-				},
-				titles_y: {
-					"Black": this.height / 7,
-					"Black Hispanic": this.height / 7,
-					"White Hispanic": this.height / 7,
-					"White": 2 * this.height / 3.15,
-					"Asian/Pacific Islander": 2 * this.height / 3.15,
-					"Other/unspecified": 2 * this.height / 3.15
+				titles: {
+					"Black": {
+						x: this.width / 5,
+						y:this.height / 7
+					},
+					"Black Hispanic": {
+						x: this.width / 2,
+						y: this.height / 7
+					},
+					"White Hispanic": {
+						x: 4 * this.width / 5,
+						y: this.height / 7
+					},
+					"White": {
+						x: this.width / 5,
+						y: 2 * this.height / 3.15
+					},
+					"Asian/Pacific Islander": {
+						x: this.width / 2,
+						y: 2 * this.height / 3.15
+					},
+					"Other/unspecified": {
+						x: 4 * this.width / 5,
+						y: 2 * this.height / 3.15
+					}
 				}
 			},
 			age: {
@@ -256,23 +329,35 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"Under 16": this.width / 6,
-					"16 to 19": 2 * this.width / 5.3,
-					"20 to 29": 3 * this.width / 5,
-					"30 to 39": 5 * this.width / 6,
-					"40 to 49": this.width / 6,
-					"50 to 59": 2 * this.width / 5.3,
-					"60+": 3 * this.width / 5
-				},
-				titles_y: {
-					"Under 16": this.height / 7,
-					"16 to 19": this.height / 7,
-					"20 to 29": this.height / 7,
-					"30 to 39": this.height / 7,
-					"40 to 49": 2 * this.height / 3.2,
-					"50 to 59": 2 * this.height / 3.2,
-					"60+": 2 * this.height / 3.2
+				titles: {
+					"Under 16": {
+						x: this.width / 6,
+						y: this.height / 7
+					},
+					"16 to 19": {
+						x: 2 * this.width / 5.3,
+						y: this.height / 7
+					},
+					"20 to 29": {
+						x: 3 * this.width / 5,
+						y: this.height / 7
+					},
+					"30 to 39": {
+						x: 5 * this.width / 6,
+						y: this.height / 7
+					},
+					"40 to 49": {
+						x: this.width / 6,
+						y: 2 * this.height / 3.2
+					},
+					"50 to 59": {
+						x: 2 * this.width / 5.3,
+						y: 2 * this.height / 3.2
+					},
+					"60+": {
+						x: 3 * this.width / 5,
+						y: 2 * this.height / 3.2
+					}
 				}
 			},
 			borough: {
@@ -299,19 +384,27 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"Manhattan": this.width / 5.1,
-					"Brooklyn": this.width / 2,
-					"The Bronx": 4 * this.width / 5,
-					"Queens": this.width / 5.1,
-					"Staten Island": this.width / 2
-				},
-				titles_y: {
-					"Manhattan": this.height / 7,
-					"Brooklyn": this.height / 7,
-					"The Bronx": this.height / 7,
-					"Queens": 2 * this.height / 3.2,
-					"Staten Island": 2 * this.height / 3.2
+				titles: {
+					"Manhattan": {
+						x: this.width / 5.1,
+						y: this.height / 7
+					},
+					"Brooklyn": {
+						x: this.width / 2,
+						y: this.height / 7
+					},
+					"The Bronx": {
+						x: 4 * this.width / 5,
+						y: this.height / 7
+					},
+					"Queens": {
+						x: this.width / 5.1,
+						y: 2 * this.height / 3.2
+					},
+					"Staten Island": {
+						x: this.width / 2,
+						y: 2 * this.height / 3.2
+					}
 				}
 			},
 			frisked: {
@@ -326,13 +419,15 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"Frisked": this.width / 4,
-					"Not frisked": 3 * this.width / 4
-				},
-				titles_y: {
-					"Frisked": this.height / 4,
-					"Not frisked": this.height / 4
+				titles: {
+					"Frisked": {
+						x: this.width / 4,
+						y: this.height / 4
+					},
+					"Not frisked": {
+						x: 3 * this.width / 4,
+						y: this.height / 4
+					}
 				}
 			},
 			sex: {
@@ -347,13 +442,15 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"Men": this.width / 4,
-					"Women": 3 * this.width / 4
-				},
-				titles_y: {
-					"Men": this.height / 4,
-					"Women": this.height / 4
+				titles: {
+					"Men": {
+						x: this.width / 4,
+						y: this.height / 4
+					},
+					"Women": {
+						x: 3 * this.width / 4,
+						y: this.height / 4
+					}
 				}
 			},
 			physical_force_used: {
@@ -368,13 +465,15 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"Force not used": this.width / 4,
-					"Force used": 3 * this.width / 4
-				},
-				titles_y: {
-					"Force not used": this.height / 4,
-					"Force used": this.height / 4
+				titles: {
+					"Force not used": {
+						x: this.width / 4,
+						y: this.height / 4
+					},
+					"Force used": {
+						x: 3 * this.width / 4,
+						y: this.height / 4
+					}
 				}
 			},
 			arrest_made: {
@@ -389,13 +488,15 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"No arrest made": this.width / 4,
-					"Arrest made": 3 * this.width / 4
-				},
-				titles_y: {
-					"No arrest made": this.height / 4,
-					"Arrest made": this.height / 4
+				titles: {
+					"No arrest made": {
+						x: this.width / 4,
+						y: this.height / 4
+					},
+					"Arrest made": {
+						x: 3 * this.width / 4,
+						y: this.height / 4
+					}
 				}
 			},
 			summons_issued: {
@@ -410,13 +511,15 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"No summons issued": this.width / 4,
-					"Summons issued": 3 * this.width / 4
-				},
-				titles_y: {
-					"No summons issued": this.height / 4,
-					"Summons issued": this.height / 4
+				titles: {
+					"No summons issued": {
+						x: this.width / 4,
+						y: this.height / 4
+					},
+					"Summons issued": {
+						x: 3 * this.width / 4,
+						y: this.height / 4
+					}
 				}
 			},
 			contraband_found: {
@@ -431,13 +534,15 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"No contraband found": this.width / 4,
-					"Contraband found": 3 * this.width / 4
-				},
-				titles_y: {
-					"No contraband found": this.height / 4,
-					"Contraband found": this.height / 4
+				titles: {
+					"No contraband found": {
+						x: this.width / 4,
+						y: this.height / 4
+					},
+					"Contraband found": {
+						x: 3 * this.width / 4,
+						y: this.height / 4
+					}
 				}
 			},
 			weapon_found: {
@@ -452,13 +557,15 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"No weapon found": this.width / 4,
-					"Weapon found": 3 * this.width / 4
-				},
-				titles_y: {
-					"No weapon found": this.height / 4,
-					"Weapon found": this.height / 4
+				titles: {
+					"No weapon found": {
+						x: this.width / 4,
+						y: this.height / 4
+					},
+					"Weapon found": {
+						x: 3 * this.width / 4,
+						y: this.height / 4
+					}
 				}
 			},
 			gun_found: {
@@ -473,13 +580,15 @@ StopAndFriskInteractive = (function() {
 					},
 					"do_not_include": this.extras_center
 				},
-				titles_x: {
-					"No gun found": this.width / 4,
-					"Gun found": 3 * this.width / 4
-				},
-				titles_y: {
-					"No gun found": this.height / 4,
-					"Gun found": this.height / 4
+				titles: {
+					"No gun found": {
+						x: this.width / 4,
+						y: this.height / 4
+					},
+					"Gun found": {
+						x: 3 * this.width / 4,
+						y: this.height / 4
+					}
 				}
 			},
 			related: {
@@ -660,16 +769,17 @@ StopAndFriskInteractive = (function() {
 			this.hide_all_titles();
 			title_x_coordinates = this.mappings[name_of_filter].titles_x;
 			title_y_coordinates = this.mappings[name_of_filter].titles_y;
-			label_data = d3.keys(title_x_coordinates);
-			label_data = d3.keys(title_y_coordinates);
+			title_coordinates = this.mappings[name_of_filter].titles;
+
+			label_data = d3.keys(title_coordinates);
 			labels = this.vis.selectAll(name_of_filter).data(label_data);
 			return labels.enter().append("text").attr("opacity", "0").attr("class", name_of_filter).classed("filter_label", true).attr("x", (function(_this) {
 				return function(d) {
-					return title_x_coordinates[d];
+					return title_coordinates[d].x;
 				};
 			})(this)).attr("y", (function(_this) {
 				return function(d) {
-					return title_y_coordinates[d];
+					return title_coordinates[d].y;
 				};
 			})(this)).attr("text-anchor", "middle").text(function(d) {
 				return d;
