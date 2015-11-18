@@ -608,78 +608,52 @@ StopAndFriskInteractive = (function() {
 	}
 
 	StopAndFriskInteractive.prototype.create_nodes = function() {
-		this.data.forEach((function(_this) {
-			return function(d) {
-				var node;
-				if (d.is_extra === "0") {
-					node = {
-						id: d.ser_num,
-						is_extra: d.is_extra,
-						radius: _this.radius_size,
-						color: "rgba(0,0,0,0.25)",
-						race: d.race,
-						sex: d.sex,
-						age: d.age_bucket,
-						borough: d.borough,
-						frisked: d.was_frisked,
-						reason_for_stop: d.reason_for_stop_2,
-						reason_for_frisk: d.reason_for_frisk,
-						physical_force_used: d.physical_force_used,
-						arrest_made: d.arrest_made,
-						summons_issued: d.summons_issued,
-						weapon_found: d.weapon_found,
-						contraband_found: d.contraband_found,
-						gun_found: d.gun_found,
-						related: "do_not_include",
-						x: (Math.random() * 2 * _this.width) - (_this.width / 2),
-						y: Math.random() * 2 * _this.height - (_this.height / 2)
-					};
-				} else if (d.is_extra === "1") {
-					node = {
-						id: d.ser_num,
-						is_extra: d.is_extra,
-						radius: _this.radius_size,
-						color: "rgba(0,0,0,0.25)",
-						race: d.race,
-						sex: d.sex,
-						age: d.age_bucket,
-						borough: d.borough,
-						frisked: d.was_frisked,
-						reason_for_stop: d.reason_for_stop_2,
-						reason_for_frisk: d.reason_for_frisk,
-						physical_force_used: d.physical_force_used,
-						arrest_made: d.arrest_made,
-						summons_issued: d.summons_issued,
-						weapon_found: d.weapon_found,
-						contraband_found: d.contraband_found,
-						gun_found: d.gun_found,
-						related: "do_not_include",
-						x: Math.random() * _this.width,
-						y: 1.5 * _this.height
-					};
-				}
-				return _this.nodes.push(node);
+		this.data.forEach(function(d) {
+			var node = {
+				id: d.ser_num,
+				is_extra: d.is_extra,
+				radius: this.radius_size,
+				color: "rgba(0,0,0,0.25)",
+				race: d.race,
+				sex: d.sex,
+				age: d.age_bucket,
+				borough: d.borough,
+				frisked: d.was_frisked,
+				reason_for_stop: d.reason_for_stop_2,
+				reason_for_frisk: d.reason_for_frisk,
+				physical_force_used: d.physical_force_used,
+				arrest_made: d.arrest_made,
+				summons_issued: d.summons_issued,
+				weapon_found: d.weapon_found,
+				contraband_found: d.contraband_found,
+				gun_found: d.gun_found,
+				related: "do_not_include",
+				x: (Math.random() * 2 * this.width) - (this.width / 2),
+				y: Math.random() * 2 * this.height - (this.height / 2)
 			};
-		})(this));
-		return this.nodes.sort(function(a, b) {
-			return b.value - a.value;
-		});
+
+			node.x = d.is_extra === "0" ? (Math.random() * 2 * this.width) - (this.width / 2) : Math.random() * this.width;
+			node.y = d.is_extra === "0" ? Math.random() * 2 * this.height - (this.height / 2) : 1.5 * this.height;
+
+			this.nodes.push(node);
+		}.bind(this));
 	};
 
 	StopAndFriskInteractive.prototype.create_vis = function() {
-		this.vis_height = d3.select("#vis").style("height", this.height);
 		this.vis = d3.select("#vis").append("svg").attr("width", this.width).attr("height", this.height).attr("id", "svg_vis");
-		this.circles = this.vis.selectAll("circle").data(this.nodes, function(d) {
-			return d.id;
-		});
-		this.circles.enter().append("circle").attr("r", 0).attr("fill", function(d) {
-			return d.color;
-		}).attr("id", function(d) {
-			return "bubble_" + d.id;
-		});
-		return this.circles.transition().duration(2000).attr("r", function(d) {
-			return d.radius;
-		});
+		this.circles = this.vis.selectAll("circle").data(this.nodes);
+		this.circles
+			.enter()
+			.append("circle")
+			.attr("r", 0)
+			.attr("fill", function(d) {
+				return d.color;
+			})
+			.transition()
+			.duration(2000)
+			.attr("r", function(d) {
+				return d.radius;
+			});
 	};
 
 	StopAndFriskInteractive.prototype.charge = function(d) {
@@ -687,20 +661,18 @@ StopAndFriskInteractive = (function() {
 	};
 
 	StopAndFriskInteractive.prototype.start = function() {
-		return this.force = d3.layout.force().nodes(this.nodes).size([this.width, this.height]);
+		this.force = d3.layout.force().nodes(this.nodes).size([this.width, this.height]);
 	};
 
 	StopAndFriskInteractive.prototype.display_group_all = function() {
 		var text, title, title_data, title_x, title_y;
-		this.force.gravity(this.layout_gravity).charge(this.charge).friction(0.9).on('tick', (function(_this) {
-			return function(e) {
-				return _this.circles.each(_this.move_towards_center(e.alpha)).attr("cx", function(d) {
-					return d.x;
-				}).attr('cy', function(d) {
-					return d.y;
-				});
-			};
-		})(this));
+		this.force.gravity(this.layout_gravity).charge(this.charge).friction(0.9).on('tick', function(e) {
+			return this.circles.each(this.move_towards_center(e.alpha)).attr("cx", function(d) {
+				return d.x;
+			}).attr('cy', function(d) {
+				return d.y;
+			});
+		}.bind(this));
 		this.force.start();
 		if (this.iPadPortrait) {
 			title_x = {
@@ -723,15 +695,11 @@ StopAndFriskInteractive = (function() {
 		}
 		this.hide_all_titles();
 		title = this.vis.selectAll('.title').data(title_data);
-		title.enter().append('text').attr('opacity', 0).attr('class', 'article_title').attr('x', (function(_this) {
-			return function(d) {
-				return title_x[d];
-			};
-		})(this)).attr('y', (function(_this) {
-			return function(d) {
-				return title_y[d];
-			};
-		})(this)).attr('text-anchor', 'middle').text(function(d) {
+		title.enter().append('text').attr('opacity', 0).attr('class', 'article_title').attr('x', function(d) {
+			return title_x[d];
+		}).attr('y', function(d) {
+			return title_y[d];
+		}).attr('text-anchor', 'middle').text(function(d) {
 			return d;
 		}).transition().duration(400).attr('opacity', 1);
 		if (this.iPadPortrait) {
@@ -742,76 +710,63 @@ StopAndFriskInteractive = (function() {
 	};
 
 	StopAndFriskInteractive.prototype.move_towards_center = function(alpha) {
-		return (function(_this) {
-			return function(d) {
-				if (d.is_extra === "0") {
-					d.x = d.x + (_this.center.x - d.x) * (_this.damper + 0.02) * alpha;
-					return d.y = d.y + (_this.center.y - d.y) * (_this.damper + 0.02) * alpha;
-				} else if (d.is_extra === "1") {
-					d.x = d.x + (_this.extras_center.x - d.x) * (_this.damper + 0.02) * alpha;
-					return d.y = d.y + (_this.extras_center.y - d.y) * (_this.damper + 0.02) * alpha;
-				}
-			};
-		})(this);
+		return function(d) {
+			if (d.is_extra === "0") {
+				d.x = d.x + (this.center.x - d.x) * (this.damper + 0.02) * alpha;
+				return d.y = d.y + (this.center.y - d.y) * (this.damper + 0.02) * alpha;
+			} else if (d.is_extra === "1") {
+				d.x = d.x + (this.extras_center.x - d.x) * (this.damper + 0.02) * alpha;
+				return d.y = d.y + (this.extras_center.y - d.y) * (this.damper + 0.02) * alpha;
+			}
+		}.bind(this);
 	};
 
 	StopAndFriskInteractive.prototype.hide_all_titles = function() {
-		var hide_titles;
-		return hide_titles = this.vis.selectAll('.article_title, .foreignHTMLelement, .filter_label').transition().duration(200).attr("opacity", 0).remove();
+		this.vis.selectAll('.article_title, .foreignHTMLelement, .filter_label').transition().duration(200).attr("opacity", 0).remove();
 	};
 
 	StopAndFriskInteractive.prototype.display_labels = function(name_of_filter) {
-		var label_data, labels, text, title_x_coordinates, title_y_coordinates;
+		var label_data, labels, text;
 		if (name_of_filter === 'related') {
 			this.hide_all_titles();
 			return text = this.vis.append('foreignObject').attr('x', 0.1 * this.width).attr('y', this.height / 4).attr('width', 0.8 * this.width).attr('height', this.height).classed('foreignHTMLelement', true).classed('relatedVisualizations', true).append("xhtml:div").html('<span><h2>More visualizations</h2><div><h3><a href="http://bklynr.com/block-by-block-brooklyns-past-and-present/">Block by Block, Brooklyn’s Past and&nbsp;Present</a></h3><p>Exploring the history of the borough through the ages of its more than 320,000 buildings. A map by Thomas&nbsp;Rhiel</p></div><div><h3><a href="http://bklynr.com/mean-streets/">Mean Streets</a></h3><p>A data-driven look at Brooklyn’s most dangerous roads for cyclists. An interactive map by Nilkanth&nbsp;Patel</p></div><div class="last"><h3><a href="http://bklynr.com/brooklyn-beat/">Brooklyn Beat</a></h3><p>How coverage of Brooklyn has changed. An interactive map by Nilkanth&nbsp;Patel</p></div></span>');
 		} else {
 			this.hide_all_titles();
-			title_x_coordinates = this.mappings[name_of_filter].titles_x;
-			title_y_coordinates = this.mappings[name_of_filter].titles_y;
 			title_coordinates = this.mappings[name_of_filter].titles;
 
 			label_data = d3.keys(title_coordinates);
 			labels = this.vis.selectAll(name_of_filter).data(label_data);
-			return labels.enter().append("text").attr("opacity", "0").attr("class", name_of_filter).classed("filter_label", true).attr("x", (function(_this) {
-				return function(d) {
-					return title_coordinates[d].x;
-				};
-			})(this)).attr("y", (function(_this) {
-				return function(d) {
-					return title_coordinates[d].y;
-				};
-			})(this)).attr("text-anchor", "middle").text(function(d) {
+			return labels.enter().append("text").attr("opacity", "0").attr("class", name_of_filter).classed("filter_label", true).attr("x", function(d) {
+				return title_coordinates[d].x;
+			}).attr("y", function(d) {
+				return title_coordinates[d].y;
+			}).attr("text-anchor", "middle").text(function(d) {
 				return d;
 			}).transition().duration(400).attr("opacity", 1);
 		}
 	};
 
 	StopAndFriskInteractive.prototype.display_by = function(filter_name) {
-		this.force.gravity(this.layout_gravity).charge(this.charge).friction(0.9).on("tick", (function(_this) {
-			return function(e) {
-				return _this.circles.each(_this.move_towards(e.alpha, filter_name)).attr("cx", function(d) {
+		this.force.gravity(this.layout_gravity).charge(this.charge).friction(0.9).on("tick", function(e) {
+			return this.circles.each(this.move_towards(e.alpha, filter_name)).attr("cx", function(d) {
 					return d.x;
 				}).attr("cy", function(d) {
 					return d.y;
 				});
-			};
-		})(this));
+			}.bind(this));
 		this.force.start();
-		return this.display_labels(filter_name);
+		this.display_labels(filter_name);
 	};
 
 	StopAndFriskInteractive.prototype.move_towards = function(alpha, filter_name) {
 		var target_filter_centers;
 		target_filter_centers = this.mappings[filter_name].centers;
-		return (function(_this) {
-			return function(d) {
-				var target;
-				target = target_filter_centers[d[filter_name]];
-				d.x = d.x + (target.x - d.x) * (_this.damper + 0.02) * alpha * 1.1;
-				return d.y = d.y + (target.y - d.y) * (_this.damper + 0.02) * alpha * 1.1;
-			};
-		})(this);
+		return function(d) {
+			var target;
+			target = target_filter_centers[d[filter_name]];
+			d.x = d.x + (target.x - d.x) * (this.damper + 0.02) * alpha * 1.1;
+			return d.y = d.y + (target.y - d.y) * (this.damper + 0.02) * alpha * 1.1;
+		}.bind(this);
 	};
 
 	return StopAndFriskInteractive;
@@ -828,26 +783,20 @@ $(function() {
 		chart.start();
 		return root.display_all();
 	};
-	root.display_all = (function(_this) {
-		return function() {
-			return chart.display_group_all();
-		};
-	})(this);
-	root.display_byfilter = (function(_this) {
-		return function(filter_type) {
-			return chart.display_by(filter_type);
-		};
-	})(this);
-	root.toggle_view = (function(_this) {
-		return function(view_type) {
-			if (view_type === 'all') {
-				return root.display_all();
-			} else if (view_type !== '') {
-				return root.display_byfilter(view_type);
-			} else {
-				return root.display_all();
-			}
-		};
-	})(this);
+	root.display_all = function() {
+		return chart.display_group_all();
+	};
+	root.display_byfilter = function(filter_type) {
+		return chart.display_by(filter_type);
+	};
+	root.toggle_view = function(view_type) {
+		if (view_type === 'all') {
+			return root.display_all();
+		} else if (view_type !== '') {
+			return root.display_byfilter(view_type);
+		} else {
+			return root.display_all();
+		}
+	};
 	return d3.csv("data/stop_and_frisk.csv", root.render_vis);
 });
