@@ -1,0 +1,190 @@
+<!DOCTYPE>
+<html>
+<meta charset="utf-8">
+<style>
+
+  p {
+    cursor: pointer;
+  }
+
+  svg {
+    background: rgba(0,0,0,0.05);
+  }
+
+  .node {
+    stroke-width: 1.5px;
+  }
+
+</style>
+<body>
+
+<p id="gender">Gender</p>
+<p id="color">Color</p>
+<p id="animal">Animal</p>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+
+var width = 960,
+    height = 500,
+    dot_radius = 8;
+
+var categories = {
+  gender: ['male', 'female'],  
+  color: ['orangered', 'dodgerblue', 'goldenrod'],
+  animal: ['dog', 'cat', 'fish', 'bird']
+};
+
+
+
+var categories2 = {};
+d3.csv('data/stop_frisk_sample.csv', function(rows) {
+  
+  // get categories
+  for (var category in rows[0]) {
+    categories2[category] = [];
+  }
+
+  // populate categories
+  for (var i = 0; i < rows.length; i++) {
+    for (var prop in rows[i]) {
+      var the_value = rows[i][prop];
+      if (categories2[prop].indexOf(the_value) === -1) categories2[prop].push(the_value);
+    }
+  }
+});
+
+
+
+// The below is designed really just to fake some data — to give each node a color, gender, and animal value
+var getVal = function(opts) {
+  var num = Math.floor(Math.random() * opts.length);
+  return opts[num];
+};
+
+var nodes = d3.range(100).map(function(i) {
+  return {
+    index: i,
+    color: getVal(categories.color), // this is assigning values randomly
+    gender: getVal(categories.gender),
+    animal: getVal(categories.animal)    
+  };
+});
+
+
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var force = d3.layout.force()
+    .nodes(nodes)
+    .size([width, height])
+    .on("tick", tick)
+    .start();
+
+var node = svg.selectAll(".node")
+    .data(nodes)
+  .enter().append("circle")
+    .attr("class", "node")
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; })
+    .attr("r", dot_radius)
+    .style("fill", function(d, i) { return 'rgb(200,200,200)'; })
+    .style("stroke", function(d, i) { return d3.rgb('rgb(200,200,200)').darker(1); })
+    .call(force.drag)
+    .on("mousedown", function() { d3.event.stopPropagation(); });
+
+
+function dotSort(values, prop, e, o) {
+  var x, y, k;
+
+  switch (values.length) {
+    case 2:
+      k = 20 * e.alpha; // magic number
+
+      switch (values.indexOf(o[prop])) {
+        case 0:
+          x = -k;
+          break;
+        default:
+          x = k;
+          break;
+      }
+      o.x += x;
+      break;
+    case 3: 
+      k = 25 * e.alpha; // magic number
+
+      switch (values.indexOf(o[prop])) {
+        case 0:
+          x = -k;
+          break;
+        case 1: 
+          x = 0;
+          break;
+        default:
+          x = k;
+          break;
+      }
+
+      o.x += x;
+      break;
+    case 4: 
+      k = 8 * e.alpha; // magic number
+
+      switch (values.indexOf(o[prop])) {
+        case 0:
+          x = -k;
+          y = -k;
+          break;
+        case 1: 
+          x = k;
+          y = -k;
+          break;
+        case 2: 
+          x = -k;
+          y = k;
+          break;      
+        default:
+          x = k;
+          y = k;
+          break;
+      }
+
+      o.x += x * 2;
+      o.y += y;  
+      break;
+    default:
+      console.log('not a supported number');
+      break;
+  }
+}
+
+var mode = Object.keys(categories)[0];
+
+function tick(e) {
+  // Push different nodes in different directions for clustering.
+
+  nodes.forEach(function(o, i) {
+    dotSort(categories[mode], mode, e, o);
+  });  
+
+  node.attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; });
+}
+
+function setMode(new_mode) {
+  mode = new_mode;
+  force.resume();
+}
+
+d3.selectAll('p')
+  .on('click', function(a, b, c) {
+    setMode(this.id);
+  });
+
+</script>
+</body>
+</html>
