@@ -22,3 +22,17 @@ TOTAL: 519050
 
 # Make simple chart with HTML: 
 
+see chart1.html
+
+# make chart with c3
+
+see chart2.html
+
+# make chart with d4
+
+see chart3.html
+
+# make force layout chart
+
+see force2.html
+
