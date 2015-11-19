@@ -1,4 +1,4 @@
-is_extra,ser_num,borough,sex,race,age_bucket,was_frisked,contraband_found,gun_found,weapon_found,arrest_made,summons_issued,physical_force_used,reason_for_stop_2,was_frisked,reason_for_frisk
+is_extra,ser_num,Borough,Sex,Race,age_bucket,Was Frisked,contraband_found,gun_found,weapon_found,arrest_made,summons_issued,Physical Force Used,reason_for_stop_2,was_frisked,reason_for_frisk
 0,1579,Manhattan,Male,Black,16 to 19,Not frisked,No contraband found,No gun found,No weapon found,No arrest made,No summons issued,Force not used,Actions indicative of a drug transaction,Not frisked,do_not_include
 0,11611,Brooklyn,Male,Black Hispanic,16 to 19,Not frisked,No contraband found,No gun found,No weapon found,No arrest made,No summons issued,Force not used,Actions indicative of a drug transaction,Not frisked,do_not_include
 0,9224,Brooklyn,Male,Black,16 to 19,Not frisked,No contraband found,No gun found,No weapon found,No arrest made,No summons issued,Force not used,Actions indicative of a drug transaction,Not frisked,do_not_include

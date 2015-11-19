@@ -3,7 +3,9 @@
 <meta charset="utf-8">
 <style>
 
-  p {
+  .labels p {
+    display: inline-block;
+    margin-right: 1em;
     cursor: pointer;
   }
 
@@ -18,61 +20,71 @@
 </style>
 <body>
 
-<p id="gender">Gender</p>
-<p id="color">Color</p>
-<p id="animal">Animal</p>
+<div class="labels"></div>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
 
+function makeViz(data_rows, categories_to_include) {
+
 var width = 960,
-    height = 500,
-    dot_radius = 8;
+    height = 600,
+    dot_radius = 8,
+    include_all = typeof categories_to_include === 'undefined';
 
-var categories = {
-  gender: ['male', 'female'],  
-  color: ['orangered', 'dodgerblue', 'goldenrod'],
-  animal: ['dog', 'cat', 'fish', 'bird']
-};
+var categories = {}, nodes;
 
-
-
-var categories2 = {};
-d3.csv('data/stop_frisk_sample.csv', function(rows) {
-  
+if (data_rows) {
   // get categories
-  for (var category in rows[0]) {
-    categories2[category] = [];
+  for (var category in data_rows[0]) {
+    if (include_all || categories_to_include.indexOf(category) !== -1) categories[category] = [];
   }
 
   // populate categories
-  for (var i = 0; i < rows.length; i++) {
-    for (var prop in rows[i]) {
-      var the_value = rows[i][prop];
-      if (categories2[prop].indexOf(the_value) === -1) categories2[prop].push(the_value);
+  for (var i = 0; i < data_rows.length; i++) {
+    for (var prop in data_rows[i]) {
+      var the_value = data_rows[i][prop];
+      if (categories[prop] && categories[prop].indexOf(the_value) === -1) categories[prop].push(the_value);
     }
   }
-});
 
+  nodes = data_rows;
+} else {
 
+  // this is all fake / not worth much
 
-// The below is designed really just to fake some data — to give each node a color, gender, and animal value
-var getVal = function(opts) {
-  var num = Math.floor(Math.random() * opts.length);
-  return opts[num];
-};
-
-var nodes = d3.range(100).map(function(i) {
-  return {
-    index: i,
-    color: getVal(categories.color), // this is assigning values randomly
-    gender: getVal(categories.gender),
-    animal: getVal(categories.animal)    
+  categories = {
+    gender: ['male', 'female'],  
+    color: ['orangered', 'dodgerblue', 'goldenrod'],
+    animal: ['dog', 'cat', 'fish', 'bird']
   };
-});
+
+  // The below is designed really just to fake some data — to give each node a color, gender, and animal value
+  var getVal = function(opts) {
+    var num = Math.floor(Math.random() * opts.length);
+    return opts[num];
+  };
+
+  nodes = d3.range(100).map(function(i) {
+    return {
+      index: i,
+      color: getVal(categories.color), // this is assigning values randomly
+      gender: getVal(categories.gender),
+      animal: getVal(categories.animal)    
+    };
+  });
+}
 
 
+d3.select(".labels")
+  .selectAll('p')
+    .data(Object.keys(categories))
+  .enter().append('p')
+    .attr('id', function(d) { return d; })
+    .html(function(d) {
+      return d;
+    });
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
@@ -131,7 +143,7 @@ function dotSort(values, prop, e, o) {
 
       o.x += x;
       break;
-    case 4: 
+    case 4:
       k = 8 * e.alpha; // magic number
 
       switch (values.indexOf(o[prop])) {
@@ -156,6 +168,68 @@ function dotSort(values, prop, e, o) {
       o.x += x * 2;
       o.y += y;  
       break;
+    case 5:
+      k = 8 * e.alpha; // magic number
+
+      switch (values.indexOf(o[prop])) {
+        case 0:
+          x = -k * 1.5;
+          y = -k;
+          break;
+        case 1: 
+          x = 0;
+          y = -k;
+          break;
+        case 2: 
+          x = k * 1.5;
+          y = -k;
+          break;  
+        case 3: 
+          x = -k;
+          y = k;
+          break;                
+        default:
+          x = k;
+          y = k;
+          break;
+      }
+
+      o.x += x * 2;
+      o.y += y;  
+      break;  
+    case 6:
+      k = 8 * e.alpha; // magic number
+
+      switch (values.indexOf(o[prop])) {
+        case 0:
+          x = -k * 1.5;
+          y = -k;
+          break;
+        case 1: 
+          x = 0;
+          y = -k;
+          break;
+        case 2: 
+          x = k * 1.5;
+          y = -k;
+          break;  
+        case 3:
+          x = -k * 1.5;
+          y = k;
+          break;
+        case 4: 
+          x = 0;
+          y = k;
+          break;
+        default: 
+          x = k * 1.5;
+          y = k;
+          break;  
+      }
+
+      o.x += x * 2;
+      o.y += y;  
+      break;            
     default:
       console.log('not a supported number');
       break;
@@ -184,6 +258,13 @@ d3.selectAll('p')
   .on('click', function(a, b, c) {
     setMode(this.id);
   });
+
+}
+
+// makeViz();
+d3.csv('data/stop_frisk_sample.csv', function(rows) {
+  makeViz(rows, ['Was Frisked', 'Sex', 'Physical Force Used', 'Borough', 'Race']);
+});
 
 </script>
 </body>
