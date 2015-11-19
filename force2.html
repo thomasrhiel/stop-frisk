@@ -35,47 +35,20 @@ var width = 960,
 
 var categories = {}, nodes;
 
-if (data_rows) {
-  // get categories
-  for (var category in data_rows[0]) {
-    if (include_all || categories_to_include.indexOf(category) !== -1) categories[category] = [];
-  }
-
-  // populate categories
-  for (var i = 0; i < data_rows.length; i++) {
-    for (var prop in data_rows[i]) {
-      var the_value = data_rows[i][prop];
-      if (categories[prop] && categories[prop].indexOf(the_value) === -1) categories[prop].push(the_value);
-    }
-  }
-
-  nodes = data_rows;
-} else {
-
-  // this is all fake / not worth much
-
-  categories = {
-    gender: ['male', 'female'],  
-    color: ['orangered', 'dodgerblue', 'goldenrod'],
-    animal: ['dog', 'cat', 'fish', 'bird']
-  };
-
-  // The below is designed really just to fake some data — to give each node a color, gender, and animal value
-  var getVal = function(opts) {
-    var num = Math.floor(Math.random() * opts.length);
-    return opts[num];
-  };
-
-  nodes = d3.range(100).map(function(i) {
-    return {
-      index: i,
-      color: getVal(categories.color), // this is assigning values randomly
-      gender: getVal(categories.gender),
-      animal: getVal(categories.animal)    
-    };
-  });
+// get categories
+for (var category in data_rows[0]) {
+  if (include_all || categories_to_include.indexOf(category) !== -1) categories[category] = [];
 }
 
+// populate categories
+for (var i = 0; i < data_rows.length; i++) {
+  for (var prop in data_rows[i]) {
+    var the_value = data_rows[i][prop];
+    if (categories[prop] && categories[prop].indexOf(the_value) === -1) categories[prop].push(the_value);
+  }
+}
+
+nodes = data_rows;
 
 d3.select(".labels")
   .selectAll('p')
@@ -261,7 +234,6 @@ d3.selectAll('p')
 
 }
 
-// makeViz();
 d3.csv('data/stop_frisk_sample.csv', function(rows) {
   makeViz(rows, ['Was Frisked', 'Sex', 'Physical Force Used', 'Borough', 'Race']);
 });
